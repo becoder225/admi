@@ -1,0 +1,142 @@
+
+{% load static %}
+
+{% block title %} Page Index agent {% endblock %}
+ {% block pageName %} agent {% endblock %}
+
+{% block breadcrumb %}
+
+    <a href="{% url 'structure.ajouter_agent' structure_id %}" class="btn btn-outline-primary"> Ajouter un Agents</a>
+{% endblock %}
+
+ {% block content %}
+<div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Title</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+         <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th>Num Agent </th>
+                    <th>Nom </th>
+                    <th>Prenom(s)</th>
+                    <th>date de Naissance</th>
+                    <th>Telephone</th>
+                    <th>Email</th>
+                    <th>actions</th>
+                  </tr>
+                  </thead>
+             <tbody>
+             {%  for agent in agents %}
+               <tr>
+                    <th>{{ agent.numeroAgent }}</th>
+                    <th>{{ agent.user.first_name }}</th>
+                    <th>{{ agent.user.last_name }}</th>
+                    <th>{{ agent.user.birthday }}</th>
+                    <th>{{ agent.user.phone }}</th>
+                    <th>{{ agent.user.email }}</th>
+                    <th>
+                        <div class="btn-group">
+                        <a href="{% url 'structure.detail' agent.id %}" class="btn btn-default">
+                          <i class="fas fa-list"></i>
+                        </a>
+                        <a href="{% url 'structure.update' agent.id %}" class="btn btn-primary">
+                          <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="javascript:void(0)"
+                           class="btn btn-outline-success desactive"
+                           rel="{{ agent.id }}"
+                           rev="{{ agent.is_active }}" data-toggle-name="{{  agent.name }}">
+                            {% if agent.is_active %}
+                                 <i class="fas fa-pause"></i>
+                                {% else %}
+                                 <i class="fas fa-play"></i>
+                            {% endif %}
+
+                        </a>
+                      </div>
+                    </th>
+                  </tr>
+             {% endfor %}
+             </tbody>
+         </table>
+          <!-- /.modal -->
+        <div class="modal fade" id="modal-default">
+              <form method="POST" action="{% url 'structure.desactivate' %}">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body" style="alignment: center">
+             <!-- Create a Form -->
+
+                        <!-- Security token by Django -->
+                        {% csrf_token %}
+                        <h5 id="text-alert">ÊTES VOUS SUR DE VOULOIR DÉSACTIVER/ACTIVER LA agent?  </h5>
+                        <h3 style="font-weight: bold" id="name"></h3>
+
+                        <input type="hidden" value="" name="pk" id="pk" />
+                        <input type="hidden" value="" name="is_active" id="is_active" />
+
+
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Fermer</button>
+              <button type="submit" class="btn btn-outline-success" id="confirm">Confimer</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+                   </form>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+          Footer
+        </div>
+        <!-- /.card-footer-->
+      </div>
+
+ {% endblock %}
+{% block foot-javascript %}
+    <script>
+
+      $(".desactive").click(function(){
+         $("#pk").val($(this).attr("rel"))
+         $("#is_active").val($(this).attr("rev"))
+         $("#name").html('" ' + $(this).attr("data-toggle-name")+' " ')
+
+          action = "ACTIVER"
+          if($(this).attr("rev") == "True") {
+              action = "DÉSACTIVER"
+          }
+
+          $("#text-alert").html("ÊTES VOUS SUR DE VOULOIR "+action+" LA agent?")
+          $("#confirm").html(action)
+          $('#modal-default').modal({
+              //show : true,
+              backdrop : 'static',
+              keyboard:false
+          });
+
+      });
+    </script>
+
+{% endblock %}

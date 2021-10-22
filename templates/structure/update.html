@@ -1,0 +1,121 @@
+{% extends 'layouts/adminLte/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+{% block title %} Page Index Structure {% endblock %}
+ {% block pageName %} Structure {% endblock %}
+
+{% block head-css %}
+    <style>
+    .help-block{
+        color: red;
+        font-weight: bold;
+    }
+    </style>
+ {% endblock %}
+{% block breadcrumb %}
+    <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+                  <li class="breadcrumb-item active">Structure Page</li>
+     </ol>
+{% endblock %}
+
+ {% block content %}
+<div class="card">  <form method="post" action="" novalidate >
+    {% csrf_token %}
+        <div class="card-header">
+          <h3 class="card-title">Ajout d'une Structure</h3>
+
+        </div>
+        <div class="card-body">
+
+                <div class="row">
+                    <div class="col-6" >
+
+                         <div class="input-group mb-3">
+                             {{form.name|as_crispy_field}}
+                         </div>
+                        <div class="input-group mb-3">
+                             {{form.typestructureSante|as_crispy_field}}
+                         </div>
+                        <div class="input-group mb-3">
+                             {{form.pays|as_crispy_field}}
+                         </div>
+                        <div class="input-group mb-3">
+                             {{form.adresse|as_crispy_field}}
+                         </div>
+                        <div class="input-group mb-3">
+                             {{form.localisation_gps|as_crispy_field}}
+                         </div>
+                        <div class="input-group mb-3">
+                             {{form.telephone2|as_crispy_field}}
+                         </div>
+                        <div class="input-group mb-3">
+                             {{form.email|as_crispy_field}}
+                         </div>
+                        <div class="input-group mb-3">
+                             {{form.statutJuridique|as_crispy_field}}
+                         </div>
+                        <div class="input-group mb-3">
+                             {{form.enAccorPrealable|as_crispy_field}}
+                         </div>
+                    </div>
+                    <div class="col-6" >
+
+                         <div class="input-group mb-3">
+                             {{form.numImmatriculation|add_class:'form-control'|as_crispy_field}}
+                         </div>
+                        <div class="input-group mb-3">
+                             {{form.typeStructure|add_class:'form-control-border'|as_crispy_field}}
+                         </div>
+                        <div class="input-group mb-3">
+                             {{form.localite|as_crispy_field}}
+                         </div>
+                        <div class="input-group mb-3">
+                             {{form.adresse_geo|as_crispy_field}}
+                         </div>
+                        <div class="input-group mb-3">
+                             {{form.telephone|as_crispy_field}}
+                         </div>
+                        <div class="input-group mb-3">
+                             {{form.fax|as_crispy_field}}
+                         </div>
+                        <div class="input-group mb-3">
+                             {{form.secteur|as_crispy_field}}
+                         </div>
+                        <div class="input-group mb-3">
+                             {{form.description|as_crispy_field}}
+                         </div>
+
+                    </div>
+                </div>
+             <h3> Information responsable</h3>
+            <div class="row">
+                <div class="col-6">
+                     <div class="input-group mb-3">
+                             {{form.name_responsable|as_crispy_field}}
+                         </div>
+                    <div class="input-group mb-3">
+                             {{form.email_responsable|as_crispy_field}}
+                         </div>
+                </div>
+                <div class="col-6">
+                     <div class="input-group mb-3">
+                             {{form.tel_reponsable|as_crispy_field}}
+                         </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+           <button type="submit" class="btn btn-danger">Annuler</button>
+           <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        </form>
+        <!-- /.card-footer-->
+      </div>
+
+ {% endblock %}

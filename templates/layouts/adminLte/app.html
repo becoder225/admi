@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+
+   {% include 'layouts/adminLte/Css.html' %}
+    {% block head-css %} {% endblock %}
+</head>
+<body>
+
+     <section class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1> {% block pageName %} {% endblock %}</h1>
+              </div>
+              <div class="col-sm-6">
+                   {% block breadcrumb %} {% endblock %}
+
+              </div>
+            </div>
+          </div><!-- /.container-fluid -->
+        </section>
+     <section class="content">
+
+          <!-- Default box -->
+          {% block content %} {% endblock %}
+          <!-- /.card -->
+
+        </section>
+
+{% include 'layouts/adminLte/Js.html' %}
+{% block foot-javascript %} {% endblock %}
+</body>
+</html>

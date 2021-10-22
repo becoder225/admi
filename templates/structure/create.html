@@ -1,0 +1,126 @@
+{% extends 'layouts/adminLte/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+{% block title %} Page Index Structure {% endblock %}
+ {% block pageName %} Structure {% endblock %}
+
+{% block head-css %}
+    <style>
+    .help-block{
+        color: red;
+        font-weight: bold;
+    }
+    .form-width{
+       width: 80%;
+    }
+    </style>
+ {% endblock %}
+{% block breadcrumb %}
+    <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+                  <li class="breadcrumb-item active">Structure Page</li>
+     </ol>
+{% endblock %}
+
+ {% block content %}
+<div class="card">  <form method="post" action="" novalidate >
+    {% csrf_token %}
+        <div class="card-header">
+          <h3 class="card-title">Ajout d'une Structure</h3>
+
+        </div>
+        <div class="card-body">
+
+                <div class="row">
+                    <legend style="color: #3f729b; border-bottom: 1px solid #ccc"><h4 >INFORMATIONS SUR LA STRUCTURE</h4> </legend>
+                    <div class="col-6"  >
+
+                         <div class="form-group">
+                             {{form.name|add_class:'form-control'|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.typestructureSante|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.pays|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.adresse|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.localisation_gps|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.telephone2|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.email|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.statutJuridique|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.enAccorPrealable|as_crispy_field}}
+                         </div>
+                    </div>
+                    <div class="col-6"  style="border-left: 1px solid #ccc">
+
+                         <div class="form-group">
+                             {{form.numImmatriculation|add_class:'form-control'|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.typeStructure|add_class:'form-control-border'|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.localite|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.adresse_geo|as_crispy_field}}
+                         </div>
+                        <div class="input-group col-12">
+                            <input type="text" value="(00225)"  class="form-control col-2" disabled style="width: 10px; margin-right: 1px" />
+                             {{form.telephone|add_class:'form-control form-width'|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.fax|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.secteur|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.description|as_crispy_field}}
+                         </div>
+
+                    </div>
+                </div>
+             <legend style="color: #3f729b; border-bottom: 1px solid #ccc"><h3> Information responsable</h3></legend>
+            <div class="row">
+                <div class="col-6">
+                     <div class="form-group">
+                             {{form.name_responsable|as_crispy_field}}
+                         </div>
+                    <div class="form-group">
+                             {{form.email_responsable|as_crispy_field}}
+                         </div>
+                </div>
+                <div class="col-6">
+                     <div class="form-group">
+                             {{form.tel_reponsable|as_crispy_field}}
+                         </div>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+           <button type="submit" class="btn btn-danger">Annuler</button>
+           <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        </form>
+        <!-- /.card-footer-->
+      </div>
+
+ {% endblock %}

@@ -1,0 +1,173 @@
+ {% include 'layouts/adminLte/Css.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+
+<style>
+    .asteriskField {
+       color: red;
+    }
+    .hidden{
+        display: none
+    }
+</style>
+ <form method="post" action="" novalidate id="formStructure" >
+    {% csrf_token %}
+
+            <div class="row alert alert-success hidden" id="messageBox" >info</div>
+
+                <div class="row">
+                    <legend style="color: #3f729b; border-bottom: 1px solid #ccc"><h4 >INFORMATIONS SUR LA STRUCTURE</h4> </legend>
+                    <div class="col-6"  >
+
+                         <div class="form-group">
+                             {{form.name|add_class:'form-control'|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.typestructureSante|add_class:'form-control typestructureSante'|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.pays|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.adresse|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.localisation_gps|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.telephone2|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.email|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.statutJuridique|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.enAccorPrealable|as_crispy_field}}
+                         </div>
+                    </div>
+                    <div class="col-6"  style="border-left: 1px solid #ccc">
+
+                         <div class="form-group">
+                             {{form.numImmatriculation|add_class:'form-control'|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.typeStructure|add_class:'form-control-border typeStructure'|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.localite|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.adresse_geo|as_crispy_field}}
+                         </div>
+                        <div class="input-group col-12">
+                            <input type="text" value="(00225)"  class="form-control col-2" disabled style="width: 10px; margin-right: 1px" />
+                             {{form.telephone|add_class:'form-control form-width'|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.fax|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.secteur|as_crispy_field}}
+                         </div>
+                        <div class="form-group">
+                             {{form.description|as_crispy_field}}
+                         </div>
+
+                    </div>
+                </div>
+             <legend style="color: #3f729b; border-bottom: 1px solid #ccc"><h3> Information responsable</h3></legend>
+            <div class="row">
+                <div class="col-6">
+                     <div class="form-group">
+                             {{form.name_responsable|as_crispy_field}}
+                         </div>
+                    <div class="form-group">
+                             {{form.email_responsable|as_crispy_field}}
+                         </div>
+                </div>
+                <div class="col-6">
+                     <div class="form-group">
+                             {{form.tel_reponsable|as_crispy_field}}
+                         </div>
+                </div>
+            </div>
+
+
+
+
+        <div class="modal-footer ">
+              <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i>  Annuler</button>
+              <button type="submit" class="btn btn-primary submit" id="save-create"><i class="fas fa-archive"></i>  Enregister & Nouveau</button>
+              <button type="submit" class="btn btn-success submit" id="save-close"><i class="fas fa-save"></i> Enregister</button>
+            </div>
+        </form>
+
+{% include 'layouts/adminLte/Js.html' %}
+
+ <script>
+
+    let button = "" //buton
+    $(".submit").on("click", function () {
+        button = $(this).attr('id')
+        $("#formStructure").submit()
+
+    })
+
+    $(".typeStructure").on("change", function () {
+
+        if ($(this).val() === '1'){
+            $(".typestructureSante").attr('disabled', "true")
+        }else {
+            console.log($(this).val())
+             $(".typestructureSante").removeAttr('disabled')
+        }
+
+    });
+
+     $(document).on('submit', '#formStructure', function (e) {
+         let example_form = '#formStructure';
+        /*-------------reinitialisation des erreurs-------*/
+         $(".error-text").html("")
+         $(".form-control").removeClass("is-invalid")
+
+         e.preventDefault();
+         $.ajax({
+             method:'POST',
+             url : "{% url 'structure.save_structure' %}",
+             data : $(this).serialize(),
+             success: function(data) {
+                 console.log(data)
+                let classe = data.Class;
+                let message = data.Message;
+                $("#messageBox").removeClass('hidden').addClass(classe).html(message).fadeOut(10000, function () {
+                    if(button === "save-close"){
+                        document.location = '{% url 'structure.index' %}'
+                    }else {
+                        $(example_form)[0].reset()
+                    }
+                })
+            },
+            error: function (data, xhr, errmsg, err) {
+
+                $.each(data.responseJSON.error, function (key,value) {
+
+                    field = document.getElementsByName(key)[0]
+                    console.log(value)
+                    field.classList.add('is-invalid')
+                    let elem = document.createElement('small');
+                    elem.style.cssText = 'color: red; font-style: italic; font-weight: bold';
+                    elem.classList.add("error-text")
+                    let textnode = document.createTextNode(value[0]);
+                    elem.appendChild(textnode);
+                    field.parentNode.appendChild(elem);
+                    //$(".error-text").html("")
+                })
+
+            }
+         })
+
+     })
+ </script>
